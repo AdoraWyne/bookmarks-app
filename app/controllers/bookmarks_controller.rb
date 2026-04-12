@@ -5,7 +5,8 @@ class BookmarksController < ApplicationController
   end
 
   def show
-    render json: { message: "Showing bookmarks #{params[:id]}" }
+    bookmark = Bookmark.find(params[:id])
+    render json: bookmark
   end
 
   def create
