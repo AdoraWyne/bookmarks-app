@@ -11,5 +11,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "bookmarks#index"
-  resources :bookmarks
+  resources :bookmarks, except: [ :new, :edit ]
 end
