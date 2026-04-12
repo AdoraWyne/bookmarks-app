@@ -1,6 +1,7 @@
 class BookmarksController < ApplicationController
   def index
-    render json: { message: "Welcome to Bookmarks App" }
+    bookmarks = Bookmark.all
+    render json: bookmarks
   end
 
   def show
