@@ -4,4 +4,6 @@ class ApplicationController < ActionController::Base
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
+
+  skip_before_action :verify_authenticity_token
 end
