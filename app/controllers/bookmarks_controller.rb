@@ -20,7 +20,13 @@ class BookmarksController < ApplicationController
   end
 
   def update
-    render json: { message: "Update bookmarks #{params[:id]}" }
+    bookmark = Bookmark.find(params[:id])
+
+    if bookmark.update(params.require(:bookmark).permit(:title, :url))
+      render json: bookmark
+    else
+      render json: { errors: bookmark.errors }, status: :unprocessable_entity
+    end
   end
 
   def destroy
