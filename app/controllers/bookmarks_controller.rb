@@ -10,7 +10,13 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    render json: { message: "Create a bookmark" }
+    bookmark = Bookmark.new(params.require(:bookmark).permit(:title, :url))
+
+    if bookmark.save
+      render json: bookmark, status: :created
+    else
+      render json: { errors: bookmark.errors }, status: :unprocessable_entity
+    end
   end
 
   def update
