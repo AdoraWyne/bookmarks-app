@@ -30,6 +30,8 @@ class BookmarksController < ApplicationController
   end
 
   def destroy
-    render json: { message: "Delete bookmarks #{params[:id]}" }
+    bookmark = Bookmark.find(params[:id])
+    bookmark.destroy
+    head :no_content
   end
 end
