@@ -4,6 +4,8 @@ class BookmarksController < ApplicationController
 
   def index
     bookmarks = Bookmark.all
+    bookmarks = bookmarks.search(params[:search]) if params[:search].present?
+    bookmarks = bookmarks.tagged(params[:tag]) if params[:tag].present?
     render json: bookmarks, include: :tags
   end
 
