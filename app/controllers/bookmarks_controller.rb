@@ -1,12 +1,12 @@
 class BookmarksController < ApplicationController
   def index
     bookmarks = Bookmark.all
-    render json: bookmarks
+    render json: bookmarks, include: :tags
   end
 
   def show
     bookmark = Bookmark.find(params[:id])
-    render json: bookmark
+    render json: bookmark, include: :tags
   end
 
   def create
