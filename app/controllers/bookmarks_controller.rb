@@ -1,5 +1,6 @@
 class BookmarksController < ApplicationController
   before_action :set_bookmark, only: [ :show, :update, :destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
   def index
     bookmarks = Bookmark.all
     render json: bookmarks, include: :tags
@@ -44,4 +45,7 @@ class BookmarksController < ApplicationController
     params.require(:bookmark).permit(:title, :url)
   end
 
+  def not_found
+    render json: { error: "Bookmark not found" }, status: :not_found
+  end
 end
