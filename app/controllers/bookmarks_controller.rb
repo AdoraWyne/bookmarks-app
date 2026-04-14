@@ -1,16 +1,18 @@
 class BookmarksController < ApplicationController
+  before_action :set_bookmark, only: [ :show, :update, :destroy ]
   def index
     bookmarks = Bookmark.all
     render json: bookmarks, include: :tags
   end
 
   def show
-    bookmark = Bookmark.find(params[:id])
-    render json: bookmark, include: :tags
+    if @bookmark
+      render json: @bookmark, include: :tags
+    end
   end
 
   def create
-    bookmark = Bookmark.new(params.require(:bookmark).permit(:title, :url))
+    bookmark = Bookmark.new(bookmark_params)
 
     if bookmark.save
       render json: bookmark, status: :created
@@ -20,18 +22,26 @@ class BookmarksController < ApplicationController
   end
 
   def update
-    bookmark = Bookmark.find(params[:id])
-
-    if bookmark.update(params.require(:bookmark).permit(:title, :url))
-      render json: bookmark
+    if @bookmark.update(bookmark_params)
+      render json: @bookmark
     else
       render json: { errors: bookmark.errors }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    bookmark = Bookmark.find(params[:id])
-    bookmark.destroy
+    @bookmark.destroy
     head :no_content
   end
+
+  private
+
+  def set_bookmark
+    @bookmark = Bookmark.find(params[:id])
+  end
+
+  def bookmark_params
+    params.require(:bookmark).permit(:title, :url)
+  end
+
 end
