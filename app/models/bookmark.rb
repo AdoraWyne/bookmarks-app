@@ -4,4 +4,7 @@ class Bookmark < ApplicationRecord
 
   has_many :bookmark_tags
   has_many :tags, through: :bookmark_tags
+
+  scope :search, ->(query) { where("title LIKE ?", "%#{query}%") }
+  scope :tagged, ->(name) { joins(:tags).where(tags: { name: name }) }
 end
