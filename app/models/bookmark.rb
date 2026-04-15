@@ -9,9 +9,17 @@ class Bookmark < ApplicationRecord
   scope :tagged, ->(name) { joins(:tags).where(tags: { name: name }) }
 
   before_save :set_default_description
+  after_save :log_save
+
   private
 
   def log_save
     Rails.logger.info "Bookmark saved: #{title} (#{url})"
+  end
+
+  def set_default_description
+    if description.blank?
+      self.description = "Bookmark for #{title}"
+    end
   end
 end
