@@ -7,4 +7,11 @@ class Bookmark < ApplicationRecord
 
   scope :search, ->(query) { where("title LIKE ?", "%#{query}%") }
   scope :tagged, ->(name) { joins(:tags).where(tags: { name: name }) }
+
+  before_save :set_default_description
+  private
+
+  def log_save
+    Rails.logger.info "Bookmark saved: #{title} (#{url})"
+  end
 end
