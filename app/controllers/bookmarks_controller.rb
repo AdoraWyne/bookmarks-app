@@ -3,7 +3,7 @@ class BookmarksController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def index
-    bookmarks = Bookmark.all
+    bookmarks = Bookmark.includes(:tags)
     bookmarks = bookmarks.search(params[:search]) if params[:search].present?
     bookmarks = bookmarks.tagged(params[:tag]) if params[:tag].present?
     render json: bookmarks, include: :tags
